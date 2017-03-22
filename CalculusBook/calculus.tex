@@ -1,0 +1,638 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  My documentation report
+%  Objetive: Explain what I did and how, so someone can continue with the investigation
+%
+% Important note:
+% Chapter heading images should have a 2:1 width:height ratio,
+% e.g. 920px width and 460px height.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,fleqn]{book} % Default font size and left-justified equations
+
+\usepackage[top=3cm,bottom=3cm,left=3.2cm,right=3.2cm,headsep=10pt,letterpaper]{geometry} % Page margins
+\usepackage[BoldFont,SlantFont,CJKchecksingle]{xeCJK}
+\usepackage{xcolor} % Required for specifying colors by name
+\definecolor{ocre}{RGB}{52,177,201} % Define the orange color used for highlighting throughout the book
+% Font Settings
+% \usepackage{avant} % Use the Avantgarde font for headings
+% \usepackage{times} % Use the Times font for headings
+% \usepackage{mathptmx} % Use the Adobe Times Roman as the default text font together with math symbols from the Symbol, Chancery and Computer Modern fonts
+\usepackage{dsfont} % Use the symbol that refer to R, C and other sets
+\usepackage{amssymb,amsmath} % Use the package that with a circle above a letter
+\usepackage[integrals]{wasysym}
+% \usepackage{microtype} % Slightly tweak font spacing for aesthetics
+% \usepackage[utf8]{inputenc} % Required for including letters with accents
+% \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\setmainfont{Times New Roman}
+\parindent=2em
+\linespread{1.45}
+\setmainfont{Times New Roman}
+\setCJKmainfont[BoldFont=SimHei]{SimSun}
+\setCJKmonofont{SimSun}
+\setCJKsansfont{SimHei}
+
+% Bibliography
+% \usepackage[style=alphabetic,sorting=nyt,sortcites=true,autopunct=true,babel=hyphen,hyperref=true,abbreviate=false,backref=true,backend=biber]{biblatex}
+% \addbibresource{bibliography.bib} % BibTeX bibliography file
+% \defbibheading{bibempty}{}
+
+\input{structure} % Insert the commands.tex file which contains the majority of the structure behind the template
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\begingroup
+\thispagestyle{empty}
+% \AddToShipoutPicture*{\put(0,0){\includegraphics[scale=1.25]{cover}}} % Image background
+\centering
+\vspace*{4.25cm}
+\par\normalfont\fontsize{48}{48}\sffamily\selectfont
+\textbf{微积分\hspace{0.6em}笔记本}\\ % Book title
+\vspace*{0.4cm}
+{\Huge 黄卫华~老师\hspace{0.2em} 《讲稿》}\par % Author name
+{\Huge Godfray \hspace{0.2em}整理}\par % Author name
+\endgroup
+
+%----------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%----------------------------------------------------------------------------------------
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+%\noindent Copyright \copyright\ 2014 Andrea Hidalgo\\ % Copyright notice
+
+\noindent \textsc{Calculus Notes, Nanjing University, Computer Science and Technology Dept.}\\
+
+\noindent \textsc{github.com/qiufengyu/Latex/CalculusNoteBook}\\ % URL
+
+\noindent In memory of my school days, I hope this notebook can help someone.\\ % Other words
+
+\noindent \textit{First release, February 2016} % Printing/edition date
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+\chapterimage{head.png} % Table of contents heading image
+
+\pagestyle{empty} % No headers
+
+\tableofcontents % Print the table of contents itself
+
+%\cleardoublepage % Forces the first chapter to start on an odd page so it's on the right
+
+\pagestyle{fancy} % Print headers again
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 1
+%----------------------------------------------------------------------------------------
+
+% \chapterimage{ch1Head.jpg} % Chapter heading image
+
+\chapter{函数、极限与连续性}
+
+\section{预备知识}\index{yubeizhishi}
+
+\subsection{不等式}\index{inequality}
+
+\begin{enumerate}
+\item Bernoulli不等式：$a_i>1, i = 1,2,\cdots, n$且所有的$a_i$同号，就有
+\begin{equation}\label{bernoulli}
+  \prod_{i=1}^{n}(1+a_i) \geqslant 1+\sum_{i=1}^{n}a_i
+\end{equation}
+\begin{example}
+$x_n=\left(1+\dfrac{1}{n}\right)^n$，令$a_i=\dfrac{1}{n}$，代入(\ref{bernoulli})中可得$x_n\geqslant 2$；事实上，$2\leqslant x_n \leqslant 3$
+\end{example}
+\begin{prove}
+现在证明$x_n \leqslant 3$，由二项式展开：
+\begin{eqnarray*}
+% \nonumber to remove numbering (before each equation)
+  \left(1+\dfrac{1}{n}\right)^n &=& 1+n\times \frac{1}{n}+\binom{n}{2}\left(\frac{1}{n}\right)^2+\cdots+\binom{n}{k}\left(\frac{1}{n}\right)^k+\binom{n}{n}\left(\frac{1}{n}\right)^n \\
+  ~ &=& 2+\frac{1}{2}\left(1-\frac{1}{n}\right)+\frac{1}{3!}\left(1-\frac{1}{n}\right)\left(1-\frac{2}{n}\right)+\cdots+\frac{1}{k!}\prod_{j=1}^{k-1}\left(1-\frac{j}{n}\right)\\
+  ~&~&+\cdots+\frac{1}{n!}\left(1-\frac{1}{n}\right)\left(1-\frac{2}{n}\right)\cdots\left(1-\frac{n-1}{n}\right)\\
+  ~ &<& 2+\frac{1}{2}+\frac{1}{3!}+\frac{1}{4!}+\cdots+\frac{1}{k!}+\cdots+\frac{1}{n!} \\
+  ~ &<& 2+\frac{1}{1\times 2}+\frac{1}{2\times 3}+\cdots+\frac{1}{(k-1)\times k}+\cdots+ \frac{1}{(n-1)\times n} \\
+  ~ &=& 2+1-\frac{1}{n}<3
+\end{eqnarray*}
+通过三次缩放，得证。而且是严格的$x_n<3$，故最终有：$2\leqslant x_n \leqslant 3$。
+\end{prove}
+\item $\forall i, a_i>0$且$\prod\limits_{i=1}^{n}a_i = 1$，则$\sum\limits_{i=1}^{n}a_i \geqslant n$
+\begin{prove}使用数学归纳法证明：
+\begin{enumerate}[label=(\arabic*)]
+  \item 当$n=2$时，$a_1>0, a_2>0$且$a_1a_2=1$，根据基本不等式，可得$a_1+a_2\geqslant 2 \sqrt{a_1a_2}=2$\\
+        所以结论对$n=2$成立
+  \item 假设$n=k$时，结论成立，即$a_i>0$且$\prod\limits_{i=1}^{k}a_i = 1$，则$\sum\limits_{i=1}^{k}a_i \geqslant k$
+  \item 则当$n=k+1$时，$a_i>0$且$\prod\limits_{i=1}^{k+1}a_i = 1$\\
+  若$a_1=a_2=\cdots=a_k=a_{k+1}=1$，显然$\prod\limits_{i=1}^{k+1}a_i = 1$，$\sum\limits_{i=1}^{k+1}a_i = k+1$\\
+  不妨设$x_1<1$，$x_{k+1}>1$，则有$x_2x_3\cdots(x_1x_{k+1})=1$，由(b)中的假设，我们可知$x_2+x_3+\cdots+(x_1x_{k+1})\geqslant k$
+  \begin{eqnarray*}
+    \hspace{-2.5em}\sum\limits_{i=1}^{k+1}x_i &=& x_2+\cdots+x_k+ x_1x_{k+1} - x_1x_{k+1}+x_1+x_{k+1}+1-1\\
+    \hspace{-2.5em}~ &\geqslant& k+1+x_{k+1}(1-x_1)-(1-x_1)\\
+    \hspace{-2.5em}~ &=& k+1+(1-x_1)(x_{k+1}-1) > k+1
+  \end{eqnarray*}
+  所以对$n=k+1$也成立。
+  \end{enumerate}
+  由数学归纳法，得证。
+\end{prove}
+\item Average-Geometry不等式
+\begin{eqnarray}
+% \nonumber to remove numbering (before each equation)
+  n &\leqslant& \dfrac{a_1+a_2+\cdots + a_n}{\sqrt[\leftroot{-2}\uproot{4}n]{a_1a_2\cdots a_n}} \\
+  n &\leqslant& \sqrt[\leftroot{-2}\uproot{4}n]{a_1a_2\cdots a_n} \times \left(\frac{1}{a_1}+\frac{1}{a_2}+\cdots + \frac{1}{a_n}\right) \\
+  n^2 &\leqslant&  (a_1+a_2+\cdots + a_n)\left(\frac{1}{a_1}+\frac{1}{a_2}+\cdots + \frac{1}{a_n}\right)
+\end{eqnarray}
+\begin{example}
+证明$x_n = \left(1+\dfrac{1}{n}\right)^n$是单调上升的
+\end{example}
+\begin{prove}
+即证$\left(1+\dfrac{1}{n}\right)^n < \left(1+\dfrac{1}{n+1}\right)^{n+1}$\\
+$\sqrt[\leftroot{-2}\uproot{12}n+1]{1\times\left(1+\dfrac{1}{n}\right)^n} \leqslant \dfrac{1+n\left(1+\dfrac{1}{n}\right)}{n+1}=1+\left(1+\dfrac{1}{n+1}\right)$
+\end{prove}
+\vspace{0.2cm}
+\item 柯西-施瓦兹(Cauchy-Schwarz)不等式：设$a_i, b_i \in \mathds{R}, (i=1,2,\cdots,n)$则有
+\begin{equation}\label{cauchyschwarz}
+\left(\sum_{i=1}^{n}a_ib_i\right)^2\leqslant \left(\sum_{i=1}^{n}a_i^2\right)\left(\sum_{i=1}^{n}b_i^2\right)
+\end{equation}
+该不等式可以通过构造关于$t$的不等式$\sum(a_it+b_i)^2\geqslant 0$，由二次函数的$\Delta\leqslant 0$得证。
+\item 闵可夫斯基(Minkowski)不等式：设$a_i, b_i \in \mathds{R}, (i=1,2,\cdots,n)$则有
+\begin{equation}\label{minkowski}
+\left(\sum_{i=1}^{n}(a_i+b_i)^2\right)^{\frac{1}{2}} \leqslant \left(\sum_{i=1}^{n}a_i^2\right)^{\frac{1}{2}}+\left(\sum_{i=1}^{n}b_i^2\right)^{\frac{1}{2}}
+\end{equation}
+\end{enumerate}
+\subsection{邻域}\index{neighborfield}
+设$x_0\in \mathds{R}, \delta>0$，那么$(x_0-\delta,\,x_0+\delta)$称为$x_0$的$\delta$邻域，记为$N_{\delta}(x_0)$
+\begin{enumerate}
+  \item $x_0$的去心邻域：$\mathring{N}_\delta(x_0)=N_{\delta}(x_0)-\{x_0\}$
+  \item $x_0$的左邻域：$N_{\delta}^-(x_0)=(x_0-\delta,\,x_0)$
+  \item $x_0$的右邻域：$N_{\delta}^+(x_0)=(x_0,\,x_0+\delta)$
+  \item $\infty$邻域$\left\{
+                    \begin{array}{ll}
+                      +\infty\text{邻域}, & x\geqslant M \\
+                      -\infty\text{邻域}, & x\leqslant M
+                    \end{array}
+                  \right.$；其中$M$是一个充分大的正数
+\end{enumerate}
+\subsection{确界}
+\begin{enumerate}
+  \item 上确界：数集$\mathds{S}$的最小上界称为$\mathds{S}$的上确界，记为$M = \sup\mathds{S}$\\
+    即对$\forall x \in \mathds{S}, x \leqslant M$且$\forall \varepsilon>0, \exists x_1 \in \mathds{S}$，使得$x_1>M-\varepsilon$
+  \item 下确界：数集$\mathds{S}$的最大下界称为$\mathds{S}$的下确界，记为$m = \inf\mathds{S}$\\
+    即对$\forall x \in \mathds{S}, x \geqslant M$且$\forall \varepsilon>0, \exists x_2 \in \mathds{S}$，使得$x_2<m+\varepsilon$
+  \item 确界存在公理：非空有界的数集一定存在上、下确界。
+\end{enumerate}
+\subsection{函数}
+\begin{enumerate}
+  \item 分段函数
+\begin{enumerate}[label=(\arabic*)]
+  \item 绝对值函数：$y=|x|, x\in \mathds{R}$
+  \item 取整函数：$y=[x], x\in \mathds{R}$\\
+性质：$[x]\leqslant x < [x]+1$；上取整函数$\lceil x\rceil=[x]+1$，下取整函数$\lfloor x\rfloor = [x]$
+  \item 符号函数：$y = \text{sgn}(x) = \left\{
+                                    \begin{array}{ll}
+                                      1, & x>0; \\
+                                      0, & x=0; \\
+                                      -1, & x<0.
+                                    \end{array}
+                                  \right.$
+  \item 狄里克莱(Dirichlet)函数：$y = D(x) = \left\{
+                                        \begin{array}{ll}
+                                          1, & \hbox{$x$是有理数;} \\
+                                          0, & \hbox{$x$是无理数.}
+                                        \end{array}
+                                      \right.$
+\end{enumerate}
+  \item 基本初等函数
+\begin{enumerate}[label=(\arabic*)]
+  \item 常数函数：$y = C, (c \in \mathds{R})$
+  \item 幂函数：$y = x^\alpha, (\alpha \in \mathds{R})$
+  \item 指数函数：$y = a^x, (a>0\text{且}a \neq 1)$
+  \item 对数函数：$y = \log_ax, (a>0\text{且}a \neq 1)$
+  \item 三角函数：$y = \sin x$, $y = \cos x$, $y = \tan x$, $y = \cot x$\\
+         $y = \csc x = \dfrac{1}{\sin x}$, $y = \sec x = \dfrac{1}{\cos x}$
+  \item 反三角函数：$ y = \arcsin x$, $y = \arccos x$, $y = \arctan x$
+\end{enumerate}
+  \item 初等函数：将基本初等函数进行有限次的四则运算以及有限次的复合运算得到的函数。
+\end{enumerate}
+
+\section{极限}
+\subsection{数列的极限}
+{\color{white}m}
+\begin{minipage}{0.24\textwidth}% adapt widths of minipages to your needs
+\begin{tikzpicture}[line cap=round,line join=round,x=1.0cm,y=1.0cm]
+\draw[->] (-0.4,0.0) -- (2.7,0.0) node[below] {\footnotesize $x$};
+\draw[->] (0.0,-0.4) -- (0.0,2.5) node[left]{\footnotesize $y$};
+\draw (0pt,-9.5pt) node[right] {\footnotesize $O$};
+\draw[smooth,samples=100,domain=0.0:1.28] plot(\x,{(\x)^(1.5)});
+\draw [dash pattern=on 1pt off 1pt] (1.28,1.4482)-- (1.28,0.0);
+\draw (1.28,0) -- (1.28,-0.1) node[below] {\footnotesize $1$};
+\end{tikzpicture}
+\end{minipage}
+\begin{minipage}{0.82\textwidth}\raggedright
+将函数$y=x^2$在$x\in[0,1]$区间$n$等分，近似看做小矩形求面积。
+\begin{eqnarray*}
+% \nonumber to remove numbering (before each equation)
+ \sum\limits_{i=1}^{n}\frac{1}{n}\left(\frac{i}{n}\right)^2 &=& \dfrac{1}{n^3}\sum\limits_{n}^{i=1}i^2=\dfrac{1}{n^3}\cdot \dfrac{n(n+1)(2n+1)}{6}\\
+  &=& \dfrac{1}{6}\left(1+\dfrac{1}{n}\right)\left(2+\dfrac{1}{n}\right) \rightarrow \dfrac{1}{3}
+\end{eqnarray*}
+\end{minipage}
+\vspace{0.2cm}
+\begin{enumerate}
+  \item 数列定义：将$x_1, x_2, \cdots x_n, \cdots$无穷多个数按某种法则排列起来的形式称为数列。记为$\{x_n\}$
+  \item 数列极限的定义——$\varepsilon-N$语言\\
+    设$A \in \mathds{R}$，$x-A$越来越接近$0$，对于任意的$\varepsilon>0$，找到一个自然数$N$，当$n>N$时，$|x_n-A|<\varepsilon$。数学化表示为：
+    $\exists A \in \mathds{R}$，$ \forall \varepsilon>0$，$ \exists N$,当$n>N$时，有$|x_n-A|<\varepsilon$。 则称$\{x_n\}$是收敛的，$A$是$x_n$的极限，记为
+$$\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{3pt} \lim_{n\rightarrow \infty}x_n = A ~\text{或}~ x_n\rightarrow A$$
+\begin{enumerate}[label=(\arabic*)]
+  \item $\varepsilon$具有绝对的任意性，又具有相对的固定性
+  \item $N$是存在性的，从$|x_n-A|<\varepsilon$去寻找，适当地对$|x_n-A|$进行放大，$N = N(\varepsilon)$
+  \item 等价形式：\begin{enumerate}[label=(\roman*)]
+               \item $\forall \varepsilon>0$，$\exists C >0$，$\exists N$，当$n>N$时，有$|x_n-A|<C\varepsilon$
+               \item $\forall k \in \mathds{N}$，$ \exists N$，当$n>N$时，有$|x_n-A|<\dfrac{1}{k}$
+               \item 除掉有限项外，其他的所有项均落在$A$的$\varepsilon$邻域中
+             \end{enumerate}
+\end{enumerate}
+\begin{example}
+  求证：$\lim\limits_{n\rightarrow \infty} \dfrac{1}{n}=0$
+\end{example}
+\begin{prove}
+ $\forall \varepsilon > 0$，要证$\left|\dfrac{1}{n}-0\right|<\varepsilon$，即$\dfrac{1}{n}<\varepsilon$，亦即$n>\dfrac{1}{\varepsilon}$\\
+$\therefore$取$N = \left[\dfrac{1}{\varepsilon}\right]+1$，当$n>N$时，有$\left|\dfrac{1}{n}-0\right|=\dfrac{1}{n}<\varepsilon$\\
+$\therefore \lim\limits_{n\rightarrow \infty} \dfrac{1}{n}=0$
+\end{prove}
+\begin{example}
+  求证：$\lim\limits_{n\rightarrow \infty} \dfrac{a^n}{n!}=0$，其中$a$为正实数
+\end{example}
+\begin{prove}
+ $\forall \varepsilon > 0$，要证$\left|\dfrac{a^n}{n!}-0\right|=\dfrac{a^n}{n}<\varepsilon$\\
+$\therefore \lim\limits_{n\rightarrow \infty} \dfrac{a^n}{n!}=0$
+\end{prove}
+\begin{example}
+  设$\lim\limits_{n\rightarrow \infty} x_n=A$，求证：$\lim\limits_{n\rightarrow \infty} \dfrac{x_1+x_2+\cdots+x_n}{n}=A$
+\end{example}
+\begin{prove}
+ $\because \lim\limits_{n\rightarrow \infty} x_n=A$\\
+$\therefore \forall \varepsilon>0$，$\exists N$，当$n>N$时，有$|x_n-A|<\dfrac{\varepsilon}{2}$\\
+要证$\left|\dfrac{x_1+x_2+\cdots+x_n}{n}-A\right|<\varepsilon$，我们注意到：
+\begin{eqnarray*}
+  \left|\dfrac{x_1+x_2+\cdots+x_n}{n}-A\right| &=&  \dfrac{\left|x_1-A+x_2-A+\cdots+x_n-A\right|}{n} \\
+   &\leqslant& \frac{1}{n}\left(|x_1-A|+|x_2-A|+\cdots+|x_N-A|\right.\\
+&&+\left.|x_{N+1}-A|+\cdots+|x_n-A|\right) \\
+   &\leqslant& \frac{1}{n} \left(M+\frac{(n-N)\varepsilon}{2}\right)\\
+&<&\frac{M}{n}+\frac{\varepsilon}{2}
+\end{eqnarray*}
+其中$M=|x_1-A|+|x_2-A|+\cdots+|x_N-A|$，那么只需要证明$\dfrac{M}{n}<\dfrac{\varepsilon}{2}$\\
+$\therefore \exists N_2 = \left[\dfrac{2M}{\varepsilon}\right]+1$时，当$n>N_2$时，$\dfrac{M}{n}<\dfrac{\varepsilon}{2}$\\
+取$N_1=\max\{N, N_2\}$，当$n>N_1$时，有$\left|\dfrac{x_1+x_2+\cdots+x_n}{n}-A\right|<\dfrac{M}{n}+\dfrac{\varepsilon}{2}<\varepsilon$\\
+$\therefore \lim\limits_{n\rightarrow \infty} \dfrac{x_1+x_2+\cdots+x_n}{n}=A$
+\end{prove}
+\begin{example}
+  求证：$\lim\limits_{n\rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{n}=1$
+\end{example}
+\begin{prove}
+ 构造法证明：\\$\forall \varepsilon > 0$，令$\alpha_n = \sqrt[\leftroot{-2}\uproot{4}n]{n}-1$\\
+$\therefore n = (1+\alpha_n)^n=1+n\alpha_n+\dfrac{n(n-1)}{2}\alpha_n^2+\cdots+\alpha_n^n$\\
+$\therefore n > 1 + \dfrac{n(n-1)}{2}\alpha_n^2$，$\therefore \alpha_n^2<\dfrac{2}{n}$，$\therefore \alpha_n< \sqrt{\dfrac{2}{n}}<\varepsilon$，\\
+$\therefore n > \dfrac{2}{\varepsilon^2}$，取$N=\left[\dfrac{2}{\varepsilon^2}\right]+1$，当$n>N$时，$\left|\sqrt[\leftroot{-2}\uproot{4}n]{n}-1\right|=\sqrt[\leftroot{-2}\uproot{4}n]{n}-1<\sqrt{\dfrac{2}{n}}<\varepsilon$\\
+$\therefore \lim\limits_{n\rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{n}=1$
+\end{prove}
+\begin{example}
+  求证：$\lim\limits_{n\rightarrow \infty} q^n=0$，其中$|q|<1$
+\end{example}
+\begin{prove}
+当$q=0$时，$q^n=0$，显然成立\\
+当$q\neq 0$时，$\forall \varepsilon>0$，不妨假设$\varepsilon<1$，$|q^n-0|=|q|^n<\varepsilon$\\
+$\therefore n \ln |q|< \ln \varepsilon$，$\therefore n > \dfrac{\ln \varepsilon}{\ln |q|} = \log_{|q|}\varepsilon$\\
+$\therefore$取$N = \left[\dfrac{\ln \varepsilon}{\ln |q|} \right]+1$时，$|q^n-0|<|q|^n<\varepsilon$\\
+综上，$\lim\limits_{n\rightarrow \infty} q^n=0,(|q|<1)$得证
+\end{prove}
+\begin{example}
+  用定义证明：$\lim\limits_{n\rightarrow \infty} \dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}=0$
+\end{example}
+\begin{prove}
+$\forall \varepsilon>0$，要证$\left|\dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}-0\right|<\varepsilon$，即$\dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}<\varepsilon$\\
+$\dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}=\dfrac{1}{1+n\cdot \frac{1}{\sqrt{n}}+\frac{n(n-1)}{2}\cdot\frac{1}{n}+\cdots + \left(\frac{1}{\sqrt{n}}\right)^n}<\dfrac{1}{n\cdot \frac{1}{\sqrt{n}}}=\dfrac{1}{\sqrt{n}}<\varepsilon$\\
+$\therefore n > \dfrac{1}{\varepsilon^2}$，取$N = \left[\dfrac{1}{\varepsilon^2}\right]+1$，当$n>N$时，
+$\left|\dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}-0\right|<\dfrac{1}{\sqrt{n}}<\varepsilon$\\
+$\therefore \lim\limits_{n\rightarrow \infty} \dfrac{1}{\left(1+\frac{1}{\sqrt{n}}\right)^n}=0$
+\end{prove}
+本题主要应用了Bernoulli不等式(\ref{bernoulli})进行了缩放，$\left(1+\dfrac{1}{\sqrt{n}}\right)^n>1+n\cdot\frac{1}{\sqrt{n}}=1+\sqrt{n}$
+  \item 收敛数列的性质
+\begin{enumerate}[label=(\arabic*)]
+  \item 收敛的数列其极限唯一
+\begin{prove}
+用反证法：假设$\{x_n\}$的极限不唯一\\
+不妨设$\lim\limits_{n\rightarrow \infty} x_n=A$，$\lim\limits_{n\rightarrow \infty} x_n=B$，且$A \neq B$\\
+取$\varepsilon = \dfrac{|A-B|}{2}$，则$\exists N$，当$n>N$时，$|x_n-A|<\varepsilon$，$|x_n-B|<\varepsilon$\\
+$\therefore 2\varepsilon=|A-B|=|x_n-A+B-x_n|\leqslant |x_n-A|+|x_n-B|<2\varepsilon$\\
+矛盾，上述假设不成立，原结论：收敛数列其极限唯一正确
+\end{prove}
+  \item 收敛数列必有界，有界数列不一定收敛\\
+    有界数列：$\exists M>0$，$\forall n \in \mathds{N}$，有$|x_n|\leqslant M$，则称$\{x_n\}$为有界数列。
+\begin{prove}
+ 用构造法证明：\\
+$\because \lim\limits_{n\rightarrow \infty} x_n=A$，对$\varepsilon=1>0$，$\exists N$，当$n>N$时必有$|x_n-A|<1$\\
+$\therefore |x_n|=|x_n-A+A|\leqslant |x_n-A|+|A|<|A|+1$，$(n>N)$\\
+取$M = \max\{|A|+1, |x_1|, |x_2|, \cdots, |x_N|\}$，对$\forall n \in \mathds{N}$，$|x_n|\leqslant M$
+\end{prove}
+  \item 保号性\begin{enumerate}[label=(\roman*)]
+               \item 若$\lim\limits_{n\rightarrow \infty} x_n=A>p$(或$<q$)，则$\exists N$，当$n>N$时，有$x_n>p$(或$x_n<q$)
+                \begin{prove}
+                   取$\varepsilon_0=A-p>0$，$\exists N$，当$n>N$时有$|x_n-A|<\varepsilon_0$\\
+                    $\therefore A-\varepsilon_0<x_n<A+\varepsilon_0$，$\therefore x_n>A-\varepsilon_0=A-(A-p)=p$，得证\\
+                    另一种情况同理可证。较为常见的情况，通常是取$p=q=0$，即$x_n>0$或$x_n<0$的情况。
+                \end{prove}
+               \item 若$\lim\limits_{n\rightarrow \infty} x_n=A$，$\exists d>0$，且$|A|>d$，则$\exists N$，当$n>N$时，有$|x_n|>d$
+                  \begin{prove}
+                   由$\lim\limits_{n\rightarrow \infty} x_n=A$构造$\lim\limits_{n\rightarrow \infty} |x_n|=|A|>d$\\
+                   由(i)即可得证。
+                \end{prove}
+               \item 若$x_n \leqslant y_n$，且$\lim\limits_{n\rightarrow \infty} x_n=A$，$\lim\limits_{n\rightarrow \infty} y_n=B$，则$A\leqslant B$
+                   \begin{prove}
+                   反证法：假设$A>B$，取$\varepsilon = \dfrac{A-B}{2}>0$\\
+                   由$\lim\limits_{n\rightarrow \infty} x_n=A$，得$|x_n-A|<\varepsilon$，同理$|x_n-B|<\varepsilon$，这里$n>$某个$\mathds{N}$\\
+                    $\therefore |A-B|\leqslant |x_n-A|+|x_n-B|<2\varepsilon$，$A-B<A-B$，显然矛盾\\假设错误！得证
+                \end{prove}
+             \end{enumerate}
+\item 收敛数列的任意子数列都收敛，且极限相同
+子数列定义：设对$\mathds{N}$任意选取$\{n_k\}$，则称$\{x_{n_k}\}$是$\{x_n\}$的子数列。$(n_k\geqslant k)$
+    \begin{prove}
+    $\because \lim\limits_{n\rightarrow \infty} x_n=A$，则$\exists N$，当$n>N$时，$|x_n-A|<\varepsilon$\\
+    而$n_k\geqslant k>N$，当$k>N$时，$|x_n-A|<\varepsilon$\\
+    $\therefore |x_{n_k}-A|<\varepsilon$，$\therefore \lim\limits_{n\rightarrow \infty} x_{n_k}=A$
+    \end{prove}
+我们有推论：若$\{x_n\}$有两个收敛不同极限的子数列，则$\{x_n\}$无极限（不收敛）。证明可以使用反证法，运用极限存在性。
+\end{enumerate}
+\item 数列发散，$x_n \nrightarrow A\Leftrightarrow \exists \varepsilon_0>0$，$\forall N \in \mathds{N}$，找到一个$n_0>N$，但$|x_{n_0}-A|\geqslant \varepsilon_0$，可记为$x_n\rightarrow \infty$，或$\lim\limits_{n\rightarrow \infty} x_n=\infty$，其中$\infty$可以为$+\infty$或$-\infty$\\
+    “$G-N$”语言：$\forall G>0$，$\exists N$，当$n>N$时，有$x_n>G$\ (或$x_n<-G$，$|x_n|>G$)\\
+    例如$\lim\limits_{n\rightarrow \infty} q^n=\infty\ (|q|>1)$
+
+\end{enumerate}
+\subsection{函数的极限}
+自变量$x$可以是$x\rightarrow x_0$，$x\rightarrow x_0-0\ (x_0^-)$，$x\rightarrow x_0+0\ (x_0^+)$，$x\rightarrow \infty$；而函数值$f(x)$也可以是$ f(x)\rightarrow A$，$f(x)\rightarrow \infty$，$f(x)\rightarrow +\infty$，$f(x)\rightarrow -\infty$，这些的组合都可能是极限的过程\\
+例如：$y = x^2$，当$x\rightarrow 3$，$x^2\rightarrow 9$。$y = \text{sgn}(x)$，当$x\rightarrow 0^+$，$y\rightarrow 1$；$x\rightarrow 0^-$，$y\rightarrow -1$\\
+又如：$y = \dfrac{1}{x}$，当$x\rightarrow 0^+$，$y\rightarrow +\infty$；$x\rightarrow 0^-$，$y\rightarrow -\infty$；$x\rightarrow \infty$，$y\rightarrow 0$
+\begin{enumerate}
+  \item $x\rightarrow x_0$时，$f(x)$的极限\\
+设$f(x)$在$x_0$的某个去心邻域$\mathring{N}(x_0)$内有定义，$\exists A \in \mathds{R}$，当$x$越来越靠近$x_0$时，$f(x)$与$A$也越来越接近，则$f(x)$在$x\rightarrow x_0$时，以$A$为极限，记为
+\begin{center}
+$\lim\limits_{x\rightarrow x_0} f(x)=A\ \text{或}\ f(x)\rightarrow A\ (x\rightarrow x_0)$
+\end{center}
+数学语言：$\forall \varepsilon>0$，$\exists \delta>0$，当$0<|x-x_0|<\delta$时，有$|f(x)-A|<\varepsilon$
+\begin{example}
+ 证明：$\lim\limits_{x\rightarrow 3} x^2=9$
+\end{example}
+\begin{prove}
+ $\forall \varepsilon >0$，要证$|x^2-9|<\varepsilon$，不妨先限定$|x-3|<1$，即$2<x<4$\\
+$\therefore |x^2-9|=|x-3|\cdot|x+3|=|x-3|(x+3)<7|x-3|<\varepsilon$，$\therefore |x-3|<\dfrac{\varepsilon}{7}$\\
+$\therefore$取$\delta = \min \left\{1,\,\dfrac{\varepsilon}{7}\right\}$，当$0<|x-3|<\delta$时，$|x^2-9|=|x-3|(x+3)<7\delta\leqslant\varepsilon$\\
+$\therefore \lim\limits_{x\rightarrow 3} x^2=9$得证
+\end{prove}
+\begin{example}
+ 证明：$\lim\limits_{x\rightarrow 8} \sqrt{1+x}=3$
+\end{example}
+\begin{prove}
+ $\forall \varepsilon >0$，要证$|\sqrt{1+x}-3|=\frac{|x-8|}{\sqrt{1+x}+3}<\dfrac{|x-8|}{3}<|x-8|<\varepsilon$，\\
+$\therefore$取$\delta = \varepsilon$，当$0<|x-8|<\delta$时，$|\sqrt{1+x}-3|=|x-8|<\varepsilon$\\
+$\therefore \lim\limits_{x\rightarrow 8} \sqrt{1+x}=3$得证
+\end{prove}
+\begin{example}
+ 证明：$\lim\limits_{x\rightarrow 0} a^x=1$，其中$a>0$
+\end{example}
+\begin{prove} 分情况讨论
+\begin{enumerate}[label=(\arabic*)]
+  \item $a=1$时，显然成立
+  \item $a>1$时，$\forall \varepsilon>0$，不妨设$\varepsilon<1$，要证$|a^x-1|<\varepsilon$，即$1-\varepsilon<a^x<1+\varepsilon$\\
+亦即$\log_a(1-\varepsilon)<x<\log_a(1+\varepsilon)$\\
+$\therefore$取$\delta = \min\{\log_a(1+\varepsilon),\,-\log_a(1-\varepsilon)\}$，由$0<\varepsilon<1$，$1-\varepsilon^2<1$\\
+$(1+\varepsilon)(1-\varepsilon)<1$，$1+\varepsilon<\frac{1}{1-\varepsilon}$，取对数，即有$\log_a(1+\varepsilon)<\log_a\frac{1}{1-\varepsilon}=-\log_a(1-\varepsilon)$\\
+即$\delta = \log_a(1+\varepsilon)$，当$0<|x|<\delta$时，有$|a^x-1|<\varepsilon$，$\therefore \lim\limits_{x\rightarrow 0} a^x=1\ (a>1)$
+  \item $0<a<1$时，令$b = \dfrac{1}{a}$，则$b>1$\\
+$\therefore |a^x-1|=\left|\dfrac{1}{b^x}-1\right|=\left|\dfrac{b^x-1}{b^x}\right|=\dfrac{\left|b^x-1\right|}{b^x}$\\
+由(2)，$\forall \varepsilon>0$，$\exists \delta>0$，当$0<|x-0|<\delta$时，有$|b^x-1|<\varepsilon$\\
+不妨设$\varepsilon<\dfrac{1}{2}$，则$b^x>1-\varepsilon>\dfrac{1}{2}$，$\therefore |a^x-1|=\dfrac{\left|b^x-1\right|}{b^x}<2\varepsilon$\\
+$\therefore \lim\limits_{x\rightarrow 0} a^x=1\ (0<a<1)$
+\end{enumerate}
+综上，当$a>0$时，$\lim\limits_{x\rightarrow 0} a^x=1$
+\end{prove}
+  \item $x\rightarrow x_0$的单侧极限\\
+以函数$y=[x]$为例，$x_0=-1$：
+\begin{enumerate}[label=(\arabic*)]
+  \item 当$x>-1$且$x\rightarrow -1$时，即$x\rightarrow -1^+$，$f(x)\rightarrow -1$
+  \item 当$x<-1$且$x\rightarrow -1$时，即$x\rightarrow -1^-$，$f(x)\rightarrow -2$
+\end{enumerate}
+给定$A \in \mathds{R}$，$x_0 \in \mathds{R}$，$x>x_0$或$x<x_0$且$x\rightarrow x_0$，$f(x)\rightarrow A$，称$f(x)$在$x\rightarrow x_0(x>x_0)\text{或}(x<x_0)$时以$A$为极限，$A$称为右（或左）极限，记为\\$\lim\limits_{x\rightarrow x_0^+}f(x)=f(x_0^+)=f(x_0+0)=A$或$\lim\limits_{x\rightarrow x_0^-}f(x)=f(x_0^-)=f(x_0-0)=A$\\
+“$\varepsilon$-$\delta$”数学语言表示，$|x-x_0|$的绝对值符号可以根据$x>x_0$或$x<x_0$化简
+\begin{enumerate}[label=(\arabic*)]
+  \item $f(x_0^+)=A \Longleftrightarrow \forall \varepsilon>0$，$\exists \delta>0$，当$0<x-x_0<\delta$ 时，有$|f(x)-A|<\varepsilon$
+  \item $f(x_0^-)=A \Longleftrightarrow \forall \varepsilon>0$，$\exists \delta>0$，当$0<x_0-x<\delta$ 时，有$|f(x)-A|<\varepsilon$
+\end{enumerate}
+对于极限不存在的情况，则可以用“$M$-$\delta$”语言表示：
+\begin{enumerate}[label=(\arabic*)]
+  \item $\lim\limits_{x\rightarrow x_0^+}f(x) = \infty \Longleftrightarrow \forall M>0$，$\exists \delta>0$，当$0<x-x_0<\delta$时，有$|f(x)|>M$
+  \item $\lim\limits_{x\rightarrow x_0^-}f(x) = \infty \Longleftrightarrow \forall M>0$，$\exists \delta>0$，当$0<x_0-x<\delta$时，有$|f(x)|>M$
+  \item $\lim\limits_{x\rightarrow x_0^{+(-)}}f(x) = +(-)\infty$情况，稍作修改即可
+\end{enumerate}
+双侧极限与单侧极限的关系：$\lim\limits_{x\rightarrow x_0} f(x)= A \Longleftrightarrow f(x_0^+)=f(x_0^-)=A$\\
+对于$y=[x]$，$\lim\limits_{x\rightarrow -1^+} [x]= -1$而$\lim\limits_{x\rightarrow -1^-} [x]= -2$\\$\therefore \lim\limits_{x\rightarrow -1}[x]$不存在，也不难证明函数$y=[x]$在所有整数点的极限均不存在。
+  \item $x\rightarrow \infty$时，$f(x)$的极限
+\begin{enumerate}[label=(\arabic*)]
+  \item “$\varepsilon$-$k$”语言\\
+$f(+\infty)=\lim\limits_{x\rightarrow +\infty}f(x)=A \Longleftrightarrow \forall \varepsilon>0$，$\exists k>0$，当$x>k$时，有$|f(x)-A|<\varepsilon$\\
+$f(-\infty)=\lim\limits_{x\rightarrow -\infty}f(x)=A \Longleftrightarrow \forall \varepsilon>0$，$\exists k>0$，当$x<-k$时，有$|f(x)-A|<\varepsilon$\\
+$f(\infty)=\lim\limits_{x\rightarrow \infty}f(x)=A \Longleftrightarrow \forall \varepsilon>0$，$\exists k>0$，当$|x|>k$时，有$|f(x)-A|<\varepsilon$
+\begin{example}
+ 求证：$\lim\limits_{x\rightarrow \infty} \dfrac{2x^2-4}{3x^2+x+5} = \dfrac{2}{3}$
+\end{example}
+\begin{prove}
+ $\forall \varepsilon>0$，$\left|\dfrac{2x^2-4}{3x^2+x+5}-\dfrac{2}{3}\right|=\left|\dfrac{6x^2-12-6x^2-2x-10}{3(3x^2+x+5)}\right|=\dfrac{2|x+11|}{3|3x^2+x+5|}$ \\
+$<\dfrac{|x+11|}{|3x^2+x|}$ ，不妨假设$|x|>11$，则有$\left|\dfrac{2x^2-4}{3x^2+x+5}-\dfrac{2}{3}\right|<\dfrac{2|x|}{|x||3x+1|}=\dfrac{2}{|3x+1|}<\dfrac{2}{3|x|-1}<\varepsilon$，$\therefore |x|>\dfrac{\frac{2}{\varepsilon}+1}{3}$\\
+$\therefore$取$k = \max\left\{11, \dfrac{\frac{2}{\varepsilon}+1}{3}\right\}$，当$|x|>k$时，$\left|\dfrac{2x^2-4}{3x^2+x+5}-\dfrac{2}{3}\right|<\dfrac{2}{3|x|-1}<\varepsilon$
+$\therefore \lim\limits_{x\rightarrow \infty} \dfrac{2x^2-4}{3x^2+x+5} = \dfrac{2}{3}$
+\end{prove}
+  \item 极限不存在的情况，“$M$-$k$”语言\\
+$\lim\limits_{x\rightarrow \infty}f(x) = \infty \Longleftrightarrow \forall M>0$，$\exists k > 0$，当$|x|>k$时，有$|f(x)|>M$
+\end{enumerate}
+\begin{theorem}
+海涅定理：$\lim\limits_{x\rightarrow x_0}f(x)=A \Longleftrightarrow$任取一个数列$\{x_n\}\subset \mathring{N}_\delta(x_0)$，且$x_n\rightarrow x_0$，则$\lim\limits_{n\rightarrow \infty}f(x_n)=A$
+\end{theorem}
+\begin{prove}
+\begin{enumerate}[label=(\arabic*)]
+  \item 充分性：$\lim\limits_{x\rightarrow x_0}f(x)=A \Rightarrow \forall \varepsilon>0$，$\exists \delta >0$，当$0<|x-x_0|<\delta$时，有$|f(x)-A|<\varepsilon$，对$\delta>0$，$x_n\rightarrow x_0$，$\exists N$，当$n>N$ 时，$0<|x_n-x_0|<\delta \Rightarrow |f(x_n)-A|<\varepsilon\Rightarrow \lim\limits_{n\rightarrow \infty}f(x_n)=A$
+  \item 必要性，反证法证明：假设$f(x)\nrightarrow A$，$\exists \varepsilon_0>0$，$\forall \delta = \dfrac{1}{n}>0\, (n \in \mathds{N})$，存在$\overline{x_n} \in \mathring{N}_\delta(x_0)$，尽管有$0<|\overline{x_n}-x_0|<\delta$，但$|f(x)-A|\geqslant \varepsilon_0$，又由$\overline{x_n}\rightarrow x_0$，故$|f(\overline{x_n})-A| \geqslant \varepsilon_0$，与$\lim\limits_{x\rightarrow x_0}f(x)=A$矛盾
+\end{enumerate}
+综上，定理得证。海涅定理体现了函数极限与数列极限之间的关系。
+\end{prove}
+\begin{example}
+$\lim\limits_{x\rightarrow 0}a^x=1\,(a>0)$，取$x_n = \dfrac{1}{n}\rightarrow 0$，则$\lim\limits_{n\rightarrow \infty}a^{\frac{1}{n}} = \lim\limits_{n\rightarrow \infty}\sqrt[\leftroot{-2}\uproot{4}n]{a}=1\,(a>0)$
+\end{example}
+推论：若存在两个数列$\{x_n\}$和$\{y_n\}$，$x_n, y_n \in \mathring{N}_\delta(x_0)$，$x_n \rightarrow x_0$且$y_n \rightarrow x_0$，但$f(x_n)$和$f(y_n)$的极限不等，则$f(x)$在$x\rightarrow x_0$时无极限。
+\begin{example}
+ 讨论$y = \sin\dfrac{1}{x}$在$x\rightarrow \infty$时的极限
+\end{example}
+\begin{solution}
+取$x_n = \dfrac{1}{n\pi}\rightarrow 0\,(n \rightarrow\infty)$，$\sin \dfrac{1}{x_n}=\sin(n\pi)=0 \rightarrow 0$；\\
+取$y_n = \dfrac{1}{2n\pi+\dfrac{\pi}{4}}\rightarrow 0\,(n \rightarrow\infty)$，$\sin \dfrac{1}{y_n}=\sin(2n\pi+\dfrac{\pi}{4})=\dfrac{\sqrt{2}}{2} \rightarrow \dfrac{\sqrt{2}}{2}$\\
+由以上海涅定理的推论可知，$\lim\limits_{x \rightarrow \infty} \sin \dfrac{1}{x}$不存在
+\end{solution}
+\item 函数极限的性质：唯一性，局部有界性，保号性
+\item 无穷小量
+\begin{enumerate}[label=(\arabic*)]
+\item 无穷小量：若$\lim \alpha = 0$，则称$\alpha$是该极限过程下的无穷小量，简称无穷小。\\
+注意：无穷小是一个变量，0是一个特殊的无穷小量，非常小的数不是无穷小。
+\item 无穷小的性质
+\begin{enumerate}[label=(\roman*)]
+  \item 有限个无穷小之和仍为无穷小\\
+  不妨设$\lim\limits_{x \rightarrow x_0}f_i(x)=0$，$i = 1,2,\cdots,k$，$\forall \varepsilon>0$，$\exists \delta >0$当$0<|x-x_0|<\delta$时，$|f_i(x)|<\dfrac{\varepsilon}{k}$，  $\left|\sum_{i=1}^{k}f_i(x)\right|\leqslant \sum_{i=1}^{k}\left|f_i(x)\right|<\varepsilon$\\
+  所以结论得证，但是无穷多个无穷小量之和不一定是无穷小，例如：\\
+  $\lim\limits_{n \rightarrow \infty}\left(\dfrac{1}{n+1}+\dfrac{1}{n+2}+\cdots+\dfrac{1}{n+n}\right) = \ln 2$
+  \item 无穷小与有界变量的乘积仍为无穷小\\
+  $x_n \rightarrow 0$，$y_n$为有界变量$(|y_n|\leqslant M)$，$\forall \varepsilon>0$，$\exists N$当$n>N$ 时，$|x_n|<\varepsilon$\\
+  $\therefore |x_ny_n|=|x_n||y_n|<M\varepsilon$，所以有$\lim\limits_{x\rightarrow 0}x\sin\dfrac{1}{x}=0$，$\lim\limits_{x\rightarrow \infty}\dfrac{\sin x}{x} = 0$
+  \item 推出：有限个无穷小之积仍为无穷小，无限个无穷小之积不一定为无穷小。
+\end{enumerate}
+\item 变量的极限与无穷小的关系\\
+若$\lim X = A \Leftrightarrow X = A+\alpha$，$\alpha$为无穷小
+\begin{prove}
+“$\Rightarrow$”：$\because \lim X = A \Rightarrow \lim(X-A) = 0$，令$\alpha = X - A$，$\lim \alpha = 0$\\
+所以$X = A+\alpha$\\
+“$\Leftarrow$”：易证。
+\end{prove}
+\item 无穷大量：若$\lim \dfrac{1}{X}=0$，则称$X$是该极限过程下的无穷大量，简称无穷大。\\
+非零的无穷小量与无穷大量互为倒数关系。
+\end{enumerate}
+\end{enumerate}
+\subsection{极限的四则运算}
+若$\lim X = A$，$\lim Y = B$，则有
+\begin{enumerate}[label=(\arabic*)]
+  \item $\lim(X\pm Y) = A \pm B = \lim X \pm \lim Y$\label{limpm}
+  \item $\lim (C\cdot X) = C \cdot \lim X $（$C \in \mathds{R}$）
+  \item $\lim (X\cdot Y) = \lim X \cdot \lim Y = A \cdot B$
+  \item $\lim \left(\dfrac{X}{Y}\right)=\dfrac{\lim X}{\lim Y}= \dfrac{A}{B}$ ，$B\neq 0$
+\end{enumerate}
+\begin{prove}
+\begin{enumerate}[label=(\arabic*)]
+  \item $\because \lim X = A$，$\therefore X = A+\alpha$，$\lim \alpha = 0$\\
+  $\because \lim Y = B$，$\therefore Y = B+\beta$，$\lim \beta = 0$\\
+  $\therefore X \pm Y = (A+\alpha) \pm (B+\beta)=(A \pm B)+(\alpha \pm \beta)$\\
+  显然$\alpha \pm \beta$也是一个无穷小量，两边取极限，即得$\lim (X\pm Y)=A\pm B$\\
+  采用“$\varepsilon-N$”语言证明：
+  $\forall \varepsilon>0$，$\exists N$，当$n>N$时，$|x_n-A|<\dfrac{\varepsilon}{2}$，$|y_n-B|<\dfrac{\varepsilon}{2}$\\
+  $\therefore |(x_n\pm y_n)-(A\pm B)|=|(x_n-A)\pm (y_n-B)|<|x_n-A|+|y_n-B|<\varepsilon$\\
+  $\therefore \lim (x_n\pm y_n) = A \pm B$
+  \item 略。
+  \item $X \cdot Y = (A+\alpha)\cdot(B+\beta)=AB+(A\beta+\alpha B+\alpha\beta)$\\
+  根据无穷小的性质，即得$\lim (X \cdot Y)=A\cdot B$
+  \item 证明较为复杂，提供证明思路：$\beta\rightarrow 0$，$\forall \varepsilon = \dfrac{|B|}{2}>0$，$|\beta|<\dfrac{|B|}{2}$\\
+  $\left|\dfrac{X}{Y}-\dfrac{A}{B}\right|=\left|\dfrac{A+\alpha}{B+\beta}-\dfrac{A}{B}\right|=\dfrac{|B\alpha-A\beta|}{|B(B+\beta)|}=\dfrac{|B\alpha-A\beta|}{|B|(|B|-|\beta|)}=\dfrac{2|B\alpha-A\beta|}{|B|^2}\cdots$
+\end{enumerate}
+\end{prove}
+\begin{example}
+求$\lim\limits_{x \rightarrow \infty}\dfrac{x^2-4}{5x^2-100x+1}$
+\end{example}
+\begin{solution}
+原式$=\lim\limits_{x \rightarrow \infty}\dfrac{1-\frac{4}{x^2}}{5-\frac{100}{x}+\frac{1}{x^2}}$\\
+可以证明：$\lim\limits_{x \rightarrow \infty}\dfrac{1}{x^\alpha}=0$，$\alpha>0$，所以原式$=\dfrac{1}{5}$
+\end{solution}
+\begin{example}
+求$\lim\limits_{x \rightarrow \infty}\dfrac{a_0x^m+a_1x^{m-1}+\cdots+a_{m-1}x+a_m}{b_0x^n+b_1x^{n-1}+\cdots+b_{n-1}x+b_n}$，$m,n \in \mathds{N}$，$a_i,b_i \in \mathds{R}$
+\end{example}
+\begin{solution}
+原式$=\lim\limits_{x \rightarrow \infty}x^{m-n}\dfrac{a_0+\frac{a_1}{x}+\cdots+\frac{a_{m-1}}{x^{m-1}}+\frac{a_{m}}{x^{m}}}{b_0+\frac{b_{1}}{x}+\cdots+\frac{b_{n-1}}{x^{n-1}}+\frac{b_{n}}{x^{n}}}=
+\left\{
+\begin{array}{ll}
+0, & m<n \\
+\dfrac{a_0}{b_0}, & m=n \\
+\infty, & m>n
+\end{array}
+\right.$
+\end{solution}
+\subsection{极限的存在准则}
+\begin{enumerate}
+\item 夹逼（挤）准则：$X,Y,Z$满足$X \leqslant Y \leqslant Z$，且$\lim X = \lim Z = A$，则$\lim Y = A$
+\begin{prove}
+不妨设$X=x_n$，$Y = y_n$， $Z = z_n$，\\
+$\forall \varepsilon>0$，存在某个时刻即$\exists n > N$，有$|X-A|<\varepsilon$，$|Z-A|<\varepsilon$\\
+$A-\varepsilon<X\leqslant Y\leqslant Z<A+\varepsilon$，$\therefore |Y-A|<\varepsilon$，$\therefore \lim Y = A$
+\end{prove}
+\begin{example}
+求证：$\lim\limits_{x \rightarrow \infty} \dfrac{a^n}{n!}=0$
+\end{example}
+\begin{prove}
+设$x_n = \dfrac{a^n}{n!},\,(a>1)$，$\therefore 0<x_n<\dfrac{a^{[a]+1}}{[a]!\cdot n}$\\
+我们有$\lim\limits_{x \rightarrow \infty} \dfrac{1}{n}=0$，$\therefore \lim\limits_{x\rightarrow n}\dfrac{a^{[a]+1}}{[a]!\cdot n}=0$，由夹逼准则，原式得证。
+\end{prove}
+\begin{example}
+求证：$\lim\limits_{x \rightarrow 0}\dfrac{\sin x}{x}=1$（第一基本极限）
+\end{example}
+\begin{prove}
+从单位圆中可以推出：$\sin x < x < \tan x, (0<x<\dfrac{\pi}{2})$\\
+$\therefore \dfrac{\sin x}{x}<1$，又有$x<\dfrac{\sin x}{\cos x} \Rightarrow \cos x <\dfrac{\sin x}{x}$\\
+$\therefore \cos x < \dfrac{\sin x}{x} < 1$，
+$\therefore 0 < 1-\dfrac{\sin x}{x} < 1- \cos x=2\sin^2\dfrac{x}{2}<\dfrac{x^2}{2}$\\
+$\because \lim\limits_{x\rightarrow 0^+} \dfrac{x^2}{2}=0$（无穷小乘积），由夹逼定理得$\lim\limits_{x\rightarrow 0^+}\left(1- \dfrac{\sin x}{x}\right) = 0$，$\therefore \lim\limits_{x\rightarrow 0^+} \dfrac{\sin x}{x} = 1$\\
+而在$\lim\limits_{x\rightarrow 0^-}\dfrac{\sin x}{x}$中，令$t = -x >0$，则$\lim\limits_{t\rightarrow 0^+}\dfrac{\sin (-t)}{-t}=\dfrac{\sin t}{t}=1$\\
+综上，$\lim\limits_{x \rightarrow 0}\dfrac{\sin x}{x}=1$
+\end{prove}
+首先，由$0<1-\cos x < \dfrac{x^2}{2}$，可知$\lim\limits_{x\rightarrow 0^+}(1-\cos x)=0 \Rightarrow \lim\limits_{x \rightarrow 0^+}\cos x=1$，同样地$\lim\limits_{x \rightarrow 0^-}\cos x=1$，最终可得$\lim\limits_{x \rightarrow 0}\cos x=1$，同样也可得出：$\lim\limits_{x \rightarrow 0}\sin x=0$。\\
+下面是由第一基本极限导出的一些结论：\\
+$$\lim\limits_{x \rightarrow 0}\dfrac{\tan x}{x}=\lim\limits_{x \rightarrow 0}\dfrac{\sin x}{\cos x \cdot x} = \lim\limits_{x \rightarrow 0}\dfrac{\sin x}{x} \cdot \dfrac{1}{\lim\limits_{x \rightarrow 0} \cos x}=1$$
+$$\lim\limits_{x \rightarrow 0}\dfrac{1- \cos x}{x^2}= \dfrac{2\sin^2 \dfrac{x}{2}}{\left(\dfrac{x}{2}\right)^2 \times 4} = \frac{1}{2} \lim\limits_{x \rightarrow 0} \dfrac{\sin^2 \dfrac{x}{2}}{\left(\dfrac{x}{2}\right)^2} = \frac{1}{2}$$
+$$\lim\limits_{x \rightarrow 0}\dfrac{\arcsin x}{x}\xlongequal[x = \sin t]{t = \arcsin x} \lim\limits_{t \rightarrow 0}\dfrac{\sin t}{t}=1\text{，同理，}\lim\limits_{x \rightarrow 0}\dfrac{\arctan x}{x}=1$$
+\begin{example}\label{ex1_2_6}
+设$x_n>0$，$\lim\limits_{x \rightarrow \infty} x_n = A$。证明：$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_1\cdot x_2 \cdot \cdots \cdot x_n} = A$
+\end{example}
+\begin{prove} (i) $A =0$，有$0< \sqrt[\leftroot{-2}\uproot{4}n]{x_1\cdot x_2\cdot \cdots \cdot x_n} \leqslant \dfrac{x_1+x_2+\cdots + x_n}{n}$\\
+ 易证：$\lim\limits_{x \rightarrow \infty} \dfrac{x_1+x_2+\cdots + x_n}{n}=A=0$，\\由夹逼定理可知，$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_1\cdot x_2 \cdot  \cdots \cdot x_n} = A=0$
+  (ii) $A \neq 0$，则$\lim\limits_{x \rightarrow \infty} \dfrac{1}{x_n} = \dfrac{1}{A}$，
+  $\dfrac{n}{\frac{1}{x_1}+\frac{1}{x_2}+ \cdots \frac{1}{x_n}} \leqslant \sqrt[\leftroot{-2}\uproot{4}n]{x_1\cdot x_2 \cdot \cdots \cdot x_n}\leqslant \dfrac{x_1+x_2+\cdots + x_n}{n}$\\
+  首先，$\lim\limits_{x \rightarrow \infty} \dfrac{x_1+x_2+\cdots + x_n}{n}=A$，\\另一方面，$\lim\limits_{x \rightarrow \infty} \dfrac{n}{\frac{1}{x_1}+\frac{1}{x_2}+ \cdots \frac{1}{x_n}} = \dfrac{1}{\lim\limits_{x \rightarrow \infty} \dfrac{\frac{1}{x_1}+\frac{1}{x_2}+ \cdots \frac{1}{x_n}}{n}} = \dfrac{1}{\frac{1}{A}} = A$\\
+  由夹逼定理可知，$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_1\cdot x_2 \cdot \cdots \cdot x_n} = A=0$
+\end{prove}
+\begin{example}
+设$x_n>0$，$\lim\limits_{x \rightarrow \infty} \dfrac{x_{n+1}}{x_n} = A$。证明：$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_n} = A$
+\end{example}
+\begin{prove}
+$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_n} = \lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-6}\uproot{16}n]{\dfrac{x_1}{x_0} \cdot \dfrac{x_2}{x_1} \cdot \dfrac{x_3}{x_3} \cdot \cdots \cdot \dfrac{x_n}{x_{n-1}}}$，不妨设$x_0 = 1$，\\
+令$y_i = \dfrac{x_{i}}{x_{i-1}}$，则$\lim\limits_{x \rightarrow \infty} \dfrac{y_{n+1}}{y_n} = A$，由例(\ref{ex1_2_6})可知，$\lim\limits_{x \rightarrow \infty} \sqrt[\leftroot{-2}\uproot{4}n]{x_n} = A$
+\end{prove}
+\newpage
+\item 单调有界准则（仅数列有用）：单调有界\textbf{数列}必有极限。
+\end{enumerate}
+\subsection{无穷小量的比较}
+\section{函数的连续性}
+\subsection{函数的连续概念}
+\subsection{连续函数运算法则}
+\subsection{函数的间断}
+\subsection{闭区间上连续函数的性质}
+%------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 2
+%----------------------------------------------------------------------------------------
+
+\include{chapter2}
+
+%----------------------------------------------------------------------------------------
+%	CHAPTER 3
+%----------------------------------------------------------------------------------------
+
+\include{chapter3}
+
+
+\begin{appendices}
+\include{appendix}
+\end{appendices}
+
+
+\end{document} 

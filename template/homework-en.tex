@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[top=2.54cm,bottom=2.54cm,left=3.18cm,right=3.18cm]{geometry}
+
+\usepackage[tt=false]{libertine}
+
+% \usepackage[slantfont,boldfont]{xeCJK}
+% \setmainfont{TeX Gyre Pagella}
+% \setmonofont{Monaco}
+% \setsansfont{Trebuchet MS}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1. #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)  }}
+
+
+\begin{document}
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Godfray}         % your name
+\newcommand\STUID{}               % your student id
+\newcommand\HWNUM{0}              % the homework number
+
+%Section B==============Put your answers to the questions below here=======================
+
+
+\title{\bfseries \sffamily Course Title Assignment}
+\author{\sffamily \NAME}
+
+\maketitle
+
+\question{1}{Gradients and Hessians}
+Recall that a matrix $A\in \mathbb{R}^{n\times n}$ is symmetric if $A^T = A$, that is, $A_{ij} = A_{ji}$ for all $i$, $j$. Also recall the gradient $\nabla f(x)$ of a function $f: \mathbb{R}^n \rightarrow \mathbb{R}$, which is the $n$-vector of partial derivatives $$\nabla f(x) = \left[
+                                         \begin{array}{c}
+                                           \frac{\partial}{\partial x_1}f(x) \\
+                                           \vdots \\
+                                           \frac{\partial}{\partial x_n}f(x) \\
+                                         \end{array}
+                                       \right]
+\text{ where } x = \left[
+                    \begin{array}{c}
+                     x_1 \\
+                     \vdots \\
+                     x_n
+                   \end{array}
+                   \right].$$
+
+The hessian $\nabla^2f(x)$ of a function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ is the $n\times n$ symmetric matrix of twice partial derivatives,$$\left[
+                                 \begin{array}{cccc}
+                                   \frac{\partial^2}{\partial x_1^2}f(x) & \frac{\partial^2}{\partial x_1\partial x_2}f(x) & \cdots & \frac{\partial^2}{\partial x_1\partial x_n}f(x) \\
+                                   \frac{\partial^2}{\partial x_2\partial x_1}f(x) & \frac{\partial^2}{\partial x_2^2}f(x) & \cdots & \frac{\partial^2}{\partial x_2\partial x_n}f(x) \\
+                                   \vdots & \vdots & \ddots & \vdots \\
+                                   \frac{\partial^2}{\partial x_n \partial x_1}f(x) & \frac{\partial^2}{\partial x_n \partial x_2}f(x) & \cdots & \frac{\partial^2}{\partial x_n^2}f(x) \\
+                                 \end{array}
+                               \right].$$
+
+\part{a}Let $f(x)=\frac{1}{2}x^TAx + b^Tx$, where $A$ is a symmetric matrix and $b\in \mathbb{R}^n$ is a vector. What is $\nabla f(x)$?
+
+We have $\nabla f(x) = \left[
+             \begin{array}{c}
+               \frac{\partial}{\partial x_1}\frac{1}{2}x^TAx \\
+               \vdots \\
+               \frac{\partial}{\partial x_n}\frac{1}{2}x^TAx \\
+             \end{array}
+           \right] + \left[
+             \begin{array}{c}
+               \frac{\partial}{\partial x_1}b^Tx \\
+               \vdots \\
+               \frac{\partial}{\partial x_n}b^Tx \\
+             \end{array}
+           \right]$, considering $$\frac{\partial x^TAx}{\partial x_i} = \frac{\partial}{\partial x_i}\sum_{j=1}^{n}\sum_{k=1}^{n}x_ja_{jk}x_{k} = \frac{\partial}{\partial x_i}\left(\sum_{j\neq i}^{n}\sum_{k\neq i}^{n}x_ja_{jk}x_{k}+ \sum_{k \neq i}^{n}x_ia_{ik}x_k+\sum_{j \neq i}^{n} x_ja_{ji}a_i+x_ia_{ii}x_i\right) $$
+           $$ = 0 + \sum_{k \neq i}^{n}a_{ik}x_k + \sum_{j \neq i}^{n} x_ja_{ji} + 2a_{ii}x_i= \sum_{k = 1}^{n}a_{ik}x_k + \sum_{j=1}^{n} x_ja_{ji} = A_{i*}^Tx+A_{*i}^Tx = \left((A+A^T)x\right)_{i}$$
+that is, the i-th element of $\frac{\partial x^TAx}{\partial x_i}$ is exact inner product of i-th row vector of $A$ and $x$ plus i-th column vector of $A$ and $x$ (also i-th row of $A^T$ and $x$), and we get the vectorized representation. For a symmetric matrix $A$, we have $A^T=A$, and $\frac{\partial}{\partial x_i}\frac{1}{2}x^TAx = \frac{1}{2}(A^T+A)x=Ax$. Likewise and more easier,
+$$\frac{\partial b^Tx}{\partial x_i} = \frac{\partial}{\partial x_i}\sum_{j=1}^{n}b_jx_j = b_i.$$
+Finally, $\nabla f(x) = Ax+b$.
+
+\part{b}Let $f(x)=g(h(x))$, where $g: \mathbb{R} \rightarrow \mathbb{R}$ is differentiable and $h: \mathbb{R}^n \rightarrow \mathbb{R}$ is differentiable. What is $\nabla f(x)$?
+
+By rule of chain of derivatives, $$\nabla f(x) = \frac{\partial}{\partial x_i} g(h(x)) = \frac{\text{d}g(h(x))}{\text{d}h(x)}\times \frac{\partial h(x)}{\partial x_i} = g^\prime(h(x))\times \nabla h(x).$$
+
+\part{c}Let $f(x)=\frac{1}{2}x^TAx + b^Tx$, where $A$ is symmetric and $b\in \mathbb{R}^n$ is a vector. What is $\nabla^2 f(x)$?
+
+From 1(a), $\frac{\partial}{\partial x_i}\left(\frac{1}{2}x^TAx + b^Tx\right) = Ax+b$, and $$\frac{\partial^2}{\partial x_i\partial x_j}\left(\frac{1}{2}x^TAx + b^Tx\right) = \frac{\partial}{\partial x_j}(Ax+b)= \frac{\partial Ax}{\partial x_j} = \frac{\partial}{\partial x_j}\sum_{k=1}^{n}a_{ik}x_k = a_{ij}.$$
+Still, A is symmetric, and $\frac{\partial^2f(x)}{\partial x_i\partial x_j} = A_{ij}$, $\nabla^2 f(x) = A$.
+
+\part{d}Let $f(x)=g(a^Tx)$, where $g: \mathbb{R} \rightarrow \mathbb{R}$ is continuously differentiable and $a\in \mathbb{R}^n$ is a vector. What are $\nabla f(x)$ and $\nabla^2 f(x)$? (\textit{Hint: your expression for $\nabla^2 f(x)$ may have as few as 11 symbols, including $~^\prime$ and parentheses.})
+
+By rule of chain of derivatives and 1(a), $$\frac{\partial}{\partial x_i} g(a^Tx) = \frac{\text{d}g(a^Tx)}{\text{d}(a^Tx)}\times \frac{\partial a^Tx}{\partial x_i} = g^{\prime}(a^Tx)a_i$$
+and $\nabla f(x) = g^{\prime}(a^Tx)a;$
+$$\frac{\partial^2}{\partial x_i \partial x_j} g(a^Tx) = \frac{\partial}{\partial x_j}g^{\prime}(a^Tx)a_i = \frac{\text{d}g^\prime (a^Tx)}{\text{d}a^Tx}\times \frac{\partial a^Tx}{\partial x_j} = g^{\prime\prime}(a^Tx)a_ia_j$$
+and $\nabla^2 f(x) = g^{\prime\prime}(a^Tx)aa^T.$
+
+
+\end{document}
